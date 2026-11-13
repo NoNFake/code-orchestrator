@@ -1,7 +1,7 @@
 ---
 description: Tech lead: investigates code, writes specs for coder, reviews the diff
 mode: primary
-model: opencode-go/gemini-4-argon
+model: opencode-go/gemini-4-hydrogen
 permissions:
   - action: edit
     resource: "*"
