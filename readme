@@ -22,13 +22,26 @@ Install
 
 Requires OpenCode v2+ or FuckCode v2+ and a configured model provider.
 
+Linux and macOS:
+
+curl -fsSL https://raw.githubusercontent.com/NoNFake/code-orchestrator/main/install.sh | bash
+
+
+From a clone:
+
 git clone https://github.com/NoNFake/code-orchestrator.git
 cd code-orchestrator
 ./install.sh
 
-The installer symlinks the agents into ~/.config/opencode/agents and
-~/.config/fuckcode/agents for each config directory it finds. Real files
-with the same name are not overwritten. Updates come with git pull.
+
+The installer detects opencode and fuckcode in PATH and installs the
+agents for each one it finds. Files go to:
+
+~/.config/opencode/agents/
+~/.config/fuckcode/agents/
+
+If an existing agent differs, it is saved as <name>.bak.<date> before
+being replaced. Re-run the install command to update.
 
 To start new sessions in the orchestrator, add to the root object of
 ~/.config/opencode/opencode.jsonc and ~/.config/fuckcode/fuckcode.jsonc:
@@ -72,7 +85,9 @@ enter to watch a worker session.
 Update and remove
 ------------------------
 
-cd ~/code-orchestrator && git pull
+Re-run the install command to update.
+
+Remove:
 
 rm ~/.config/opencode/agents/{orchestrator,coder,tester}.md
 rm ~/.config/fuckcode/agents/{orchestrator,coder,tester}.md
