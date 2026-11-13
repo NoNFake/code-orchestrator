@@ -1,0 +1,78 @@
+code-orchestrator
+------------------------
+
+An architect -> coder -> tester setup for OpenCode and FuckCode v2.
+
+The orchestrator plans, writes a spec and reviews the diff. The coder
+implements the spec. The tester runs build, lint and tests. Workers run
+in isolated sub-sessions, so their noise does not fill the orchestrator
+context.
+
+Files:
+
+.opencode/agents/orchestrator.md   primary, cannot edit files
+.opencode/agents/coder.md          subagent, implements the spec
+.opencode/agents/tester.md         subagent, runs checks
+opencode.jsonc                     default agent for this repository
+install.sh                         global install for both tools
+
+
+Install
+------------------------
+
+Requires OpenCode v2+ or FuckCode v2+ and a configured model provider.
+
+git clone https://github.com/NoNFake/code-orchestrator.git
+cd code-orchestrator
+./install.sh
+
+The installer symlinks the agents into ~/.config/opencode/agents and
+~/.config/fuckcode/agents for each config directory it finds. Real files
+with the same name are not overwritten. Updates come with git pull.
+
+To start new sessions in the orchestrator, add to the root object of
+~/.config/opencode/opencode.jsonc and ~/.config/fuckcode/fuckcode.jsonc:
+
+"default_agent": "orchestrator"
+
+Without it, pick the agent with shift+tab or ctrl+x a.
+Run `opencode reload` or `fuckcode reload` after changing config.
+
+
+Models
+------------------------
+
+Each agent has its own model in the frontmatter. The defaults use the
+opencode-go provider:
+
+orchestrator   opencode-go/gemini-4-hydrogen
+coder          opencode-go/deepseek-v4.1-flash
+tester         opencode-go/claude-haiku-5-5
+
+Change the model line in the agent file, or set it per project in
+opencode.jsonc under agents. Use one place, not both.
+List available models with: opencode models
+
+
+Usage
+------------------------
+
+cd ~/projects/myapp
+opencode
+
+Then describe the task as usual:
+
+Fix the checkout crash on an empty cart and add a regression test.
+
+The orchestrator reads the code, sends a spec to coder, reviews git diff
+and runs tester when needed. Press down to open the subagent picker and
+enter to watch a worker session.
+
+
+Update and remove
+------------------------
+
+cd ~/code-orchestrator && git pull
+
+rm ~/.config/opencode/agents/{orchestrator,coder,tester}.md
+rm ~/.config/fuckcode/agents/{orchestrator,coder,tester}.md
